@@ -1,0 +1,22 @@
+{
+  "name": "protocols-api",
+  "version": "1.0.0",
+  "description": "protocols application api",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
+  },
+  "author": "Gabriel Bauer Vieira",
+  "license": "ISC",
+  "devDependencies": {
+    "@rocketseat/eslint-config": "^1.2.0",
+    "@types/node": "^20.3.3",
+    "eslint": "^8.44.0",
+    "typescript": "^5.1.6",
+    "vitest": "^0.32.4",
+    "vitest-tsconfig-paths": "^3.4.1"
+  }
+}
