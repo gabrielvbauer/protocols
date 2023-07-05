@@ -1,12 +1,15 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { ProtocolStatus } from '../../application/types/protocol-status'
 
 export interface ProtocolProps {
   number: number
-  issuer: string
+  status: ProtocolStatus
+  issuerId: UniqueEntityId
   expense: string
   value: number
+  paymentMethodId: UniqueEntityId
   dueDate: Date
   issuedDate: Date
   createdAt: Date
@@ -15,43 +18,56 @@ export interface ProtocolProps {
 
 export class Protocol extends Entity<ProtocolProps> {
   get number(): number {
-    return this.number
+    return this.props.number
   }
 
-  get issuer(): string {
-    return this.issuer
+  get status(): ProtocolStatus {
+    return this.props.status
+  }
+
+  get issuerId(): UniqueEntityId {
+    return this.props.issuerId
   }
 
   get expense(): string {
-    return this.expense
+    return this.props.expense
   }
 
   get value(): number {
-    return this.value
+    return this.props.value
+  }
+
+  get paymentMethodId(): UniqueEntityId {
+    return this.props.paymentMethodId
   }
 
   get dueDate(): Date {
-    return this.dueDate
+    return this.props.dueDate
   }
 
   get issuedDate(): Date {
-    return this.issuedDate
+    return this.props.issuedDate
   }
 
   get createdAt(): Date {
-    return this.createdAt
+    return this.props.createdAt
   }
 
-  get updatedAt(): Date {
-    return this.updatedAt
+  get updatedAt(): Date | undefined {
+    return this.props.updatedAt
   }
 
   private touch(): void {
     this.props.updatedAt = new Date()
   }
 
-  set issuer(issuer: string) {
-    this.props.issuer = issuer
+  set status(status: ProtocolStatus) {
+    this.props.status = status
+    this.touch()
+  }
+
+  set issuerId(issuerId: UniqueEntityId) {
+    this.props.issuerId = issuerId
     this.touch()
   }
 
@@ -62,6 +78,11 @@ export class Protocol extends Entity<ProtocolProps> {
 
   set value(value: number) {
     this.props.value = value
+    this.touch()
+  }
+
+  set paymentMethodId(paymentMethodId: UniqueEntityId) {
+    this.props.paymentMethodId = paymentMethodId
     this.touch()
   }
 
@@ -76,7 +97,7 @@ export class Protocol extends Entity<ProtocolProps> {
   }
 
   static create(
-    props: Optional<ProtocolProps, 'createdAt' | 'number'>,
+    props: Optional<ProtocolProps, 'createdAt' | 'number' | 'status'>,
     id?: UniqueEntityId,
   ) {
     const protocol = new Protocol(
@@ -84,6 +105,7 @@ export class Protocol extends Entity<ProtocolProps> {
         ...props,
         createdAt: props.createdAt ?? new Date(),
         number: props.number ?? 0,
+        status: props.status ?? 'Rascunho',
       },
       id,
     )

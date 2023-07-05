@@ -1,10 +1,12 @@
+import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Protocol } from '../../enterprise/entities/protocol'
 import { ProtocolsRepository } from '../repositories/protocols-repository'
 
 interface CreateProtocolUseCaseRequest {
-  issuer: string
+  issuerId: UniqueEntityId
   expense: string
   value: number
+  paymentMethodId: UniqueEntityId
   dueDate: Date
   issuedDate: Date
 }
@@ -20,9 +22,10 @@ export class CreateProtocolUseCase {
     props: CreateProtocolUseCaseRequest,
   ): Promise<CreateProtocolUseCaseResponse> {
     const newProtocol = Protocol.create({
-      issuer: props.issuer,
+      issuerId: props.issuerId,
       expense: props.expense,
       value: props.value,
+      paymentMethodId: props.paymentMethodId,
       dueDate: props.dueDate,
       issuedDate: props.issuedDate,
     })
@@ -30,7 +33,7 @@ export class CreateProtocolUseCase {
     const protocol = await this.protocolsRepository.create(newProtocol)
 
     return {
-      protocol
+      protocol,
     }
   }
 }
